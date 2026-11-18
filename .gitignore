@@ -1,0 +1,66 @@
+# ==============================================================================
+# Real-Time Adaptive Voice Recognition Using Python - .gitignore
+# ==============================================================================
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Caches & Test Artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large Datasets & Raw Audio Archives
+# (Preserve directory structure via .gitkeep)
+data/downloads/*
+!data/downloads/.gitkeep
+
+data/raw/*
+!data/raw/.gitkeep
+
+data/processed/*
+!data/processed/.gitkeep
+
+# Model Checkpoints & Serialized Weights
+models/checkpoints/*
+!models/checkpoints/.gitkeep
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.h5
+
+# Runtime Logs, Profiling Data, & Benchmark Outputs
+results/*.log
+results/*.json
+results/*.csv
+results/*.png
+!results/.gitkeep
+*.log
+

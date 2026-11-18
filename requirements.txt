@@ -1,0 +1,28 @@
+# ==============================================================================
+# Real-Time Adaptive Voice Recognition Using Python
+# Project Dependencies (Stage 5: DS-CNN Training & Evaluation)
+# ==============================================================================
+
+# Configuration management & YAML parsing
+pyyaml>=6.0.1
+
+# Numerical computing (for audio arrays & DSP buffers)
+numpy>=2.0.0
+
+# Signal processing & spectral filterbanks
+scipy>=1.12.0
+
+# Real-time microphone audio capture (PortAudio wrapper)
+sounddevice>=0.4.6
+
+# Deep learning framework (CPU keyword spotting model)
+torch>=2.2.0
+
+# System & process resource profiling (CPU, RSS memory)
+psutil>=5.9.0
+
+# Plotting & DSP visualization
+matplotlib>=3.8.0
+
+# Unit testing & test automation framework
+pytest>=8.0.0

@@ -1,0 +1,91 @@
+================================================================================
+STAGE 3: REAL MICROPHONE & BUFFERING SUBSYSTEM BENCHMARK REPORT
+Project: Real-Time Adaptive Voice Recognition Using Python
+================================================================================
+Audit Date / Timestamp:       2026-11-03 22:43:48
+Operating System:             win32 (Windows)
+Python Environment:           Python 3.12.10
+
+--------------------------------------------------------------------------------
+1. AUDIO HARDWARE & FORMAT VERIFICATION
+--------------------------------------------------------------------------------
+Selected Device Index:        1
+Selected Device Name:         Microphone Array (Intel® Smart 
+Target Sampling Rate:         16000 Hz
+Actual Verified Rate:         16000.0 Hz
+Target Channels:              1 (Mono)
+Actual Verified Channels:     1
+Sample Data Format:           16-bit signed PCM (int16), converted to float32 [-1.0, 1.0]
+Hop Size:                     320 samples (20.0 ms)
+Frame Size:                   640 samples (40.0 ms, 50% overlap)
+Hardware Stream Latency:      40.00 ms
+Stream Status Flags:          None (Clean stream)
+
+--------------------------------------------------------------------------------
+2. SOFTWARE-MANAGED PING-PONG BUFFER TELEMETRY
+--------------------------------------------------------------------------------
+NOTE: These are software-managed application buffers, NOT hardware DMA buffers.
+Buffer Slot 0 (Ping) Reuses:  48
+Buffer Slot 1 (Pong) Reuses:  48
+Total Writes to Ping-Pong:    96
+Total Overwritten / Overruns: 0
+Total Underruns Reported:     0
+Final Slot 0 State:           EMPTY
+Final Slot 1 State:           READY
+
+--------------------------------------------------------------------------------
+3. BOUNDED PRODUCER-CONSUMER QUEUE METRICS
+--------------------------------------------------------------------------------
+Configured Queue Capacity:    50 blocks
+Overflow Policy:              DROP_OLDEST
+Total Blocks Enqueued:        96
+Total Blocks Dequeued:        95
+Peak Queue Occupancy:         2 blocks
+Final Queue Occupancy:        1 blocks
+Live Stream Overflows:        0
+Live Stream Dropped Blocks:   0
+Mean Queue Wait Latency:      0.110 ms
+P95 Queue Wait Latency:       0.180 ms
+
+--------------------------------------------------------------------------------
+4. QUEUE OVERFLOW DETECTION EXPERIMENT (ARTIFICIAL CONSUMER LAG)
+--------------------------------------------------------------------------------
+Experimental Small Capacity:  5 blocks
+Produced Blocks under Stall:  31
+Detected Overflow Events:     13
+Total Dropped Blocks:         13
+Sample Dropped Block Log (Never Silently Discarded):
+  Seq: 9, Timestamp: 428595.4197, Reason: OVERFLOW_DROP_OLDEST
+  Seq: 10, Timestamp: 428595.4197, Reason: OVERFLOW_DROP_OLDEST
+  Seq: 11, Timestamp: 428595.4597, Reason: OVERFLOW_DROP_OLDEST
+  Seq: 12, Timestamp: 428595.4597, Reason: OVERFLOW_DROP_OLDEST
+  Seq: 13, Timestamp: 428595.4999, Reason: OVERFLOW_DROP_OLDEST
+
+--------------------------------------------------------------------------------
+5. REAL-TIME CALLBACK TIMING & JITTER
+--------------------------------------------------------------------------------
+Total Audio Callbacks:        96
+Total PCM Samples Ingested:   30,720
+Mean Callback Execution Time: 0.0244 ms (Deadline budget: ~1.0 ms)
+Max Callback Execution Time:  0.0622 ms
+Target Callback Interval:     20.000 ms (320 samples @ 16 kHz)
+Mean Callback Interval:       20.004 ms
+P95 Callback Interval:        41.825 ms
+Signal Mean RMS (Acoustic):   0.02697
+Signal Peak RMS (Acoustic):   0.27422
+
+--------------------------------------------------------------------------------
+6. WINDOWS SCHEDULING & PYTHON CALLBACK LIMITATIONS
+--------------------------------------------------------------------------------
+A. Windows Non-RTOS Pre-emption:
+   Windows is a general-purpose operating system. Default thread scheduling quantum is
+   approximately 15.625 ms (or 1.0 ms with high-resolution timer requests). High system load,
+   Deferred Procedure Calls (DPCs), or Windows background services can cause transient thread delays.
+
+B. Python Global Interpreter Lock (GIL):
+   PortAudio invokes the Python callback from an unmanaged native C thread, acquiring the GIL
+   via PyGILState_Ensure. If another Python thread is executing a long-running CPU-bound bytecode
+   instruction, the callback may experience latency jitter before gaining GIL ownership.
+   Mitigation: The callback performs strictly O(1) memory copy and non-blocking queue push,
+   leaving all DSP, feature extraction, and ML inference to downstream consumer threads.
+================================================================================

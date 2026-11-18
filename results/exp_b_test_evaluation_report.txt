@@ -1,0 +1,67 @@
+================================================================================
+STAGE 5: KEYWORD SPOTTING MODEL TEST EVALUATION REPORT
+Project: Real-Time Adaptive Voice Recognition Using Python
+================================================================================
+Evaluation Date:              2026-11-03 23:49:42
+Model Architecture:           Compact DS-CNN (Depthwise Separable CNN)
+Trainable Parameters:         23,180
+Input Feature Shape:          [1, 49, 40] (1 ch, 49 frames, 40 Mel bins)
+Test Set Evaluated:           4,874 samples (Held-out Test Split)
+Evaluation Runtime:           1.12 seconds
+
+--------------------------------------------------------------------------------
+1. OVERALL TEST PERFORMANCE SUMMARY
+--------------------------------------------------------------------------------
+Overall Top-1 Test Accuracy:  93.91%
+Macro-Averaged F1-Score:      93.79%
+Macro-Averaged Precision:     94.02%
+Macro-Averaged Recall:        93.88%
+Weighted F1-Score:            93.81%
+Trivial Majority Baseline:    ~8.33% (1/12 random chance)
+
+--------------------------------------------------------------------------------
+2. SINGLE-SAMPLE CPU INFERENCE LATENCY
+--------------------------------------------------------------------------------
+Mean Inference Latency:       0.216 ms
+Median (P50) Latency:         0.213 ms
+95th Percentile (P95):        0.265 ms
+Real-Time Constraint (Budget): 100.0 ms per word utterance (Satisfied)
+
+--------------------------------------------------------------------------------
+3. PER-CLASS METRICS (PRECISION, RECALL, F1, SUPPORT)
+--------------------------------------------------------------------------------
+Class Name      | Precision   | Recall      | F1-Score    | Support 
+-----------------------------------------------------------------
+_silence_       | 97.1%       | 100.0%      | 98.5%       | 400     
+_unknown_       | 94.8%       | 73.5%       | 82.8%       | 400     
+yes             | 98.3%       | 96.7%       | 97.5%       | 419     
+no              | 85.2%       | 97.8%       | 91.0%       | 405     
+up              | 93.5%       | 94.1%       | 93.8%       | 425     
+down            | 94.6%       | 91.4%       | 93.0%       | 406     
+left            | 93.8%       | 95.4%       | 94.6%       | 412     
+right           | 96.0%       | 96.2%       | 96.1%       | 396     
+on              | 93.1%       | 94.7%       | 93.9%       | 396     
+off             | 92.1%       | 95.5%       | 93.8%       | 402     
+stop            | 97.4%       | 99.5%       | 98.4%       | 411     
+go              | 92.5%       | 91.8%       | 92.1%       | 402     
+-----------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+4. CONFUSION MATRIX (Rows: Actual Label, Columns: Predicted Label)
+--------------------------------------------------------------------------------
+Actual \ Pred  |  _si  _un  yes   no   up  dow  lef  rig   on  off  sto   go
+----------------------------------------------------------------------------
+_silence_      |  400    0    0    0    0    0    0    0    0    0    0    0
+_unknown_      |    2  294    4   14   11   10    9   14   15    7    5   15
+yes            |    1    2  405    2    0    0    4    0    0    2    1    2
+no             |    0    0    0  396    0    5    0    0    0    0    0    4
+up             |    1    3    0    0  400    0    1    0    7   10    3    0
+down           |    1    4    0   17    2  371    4    2    1    0    0    4
+left           |    0    1    2   11    3    0  393    0    1    1    0    0
+right          |    2    3    0    2    0    2    5  381    1    0    0    0
+on             |    4    0    0    0    3    0    0    0  375   10    2    2
+off            |    0    3    0    0    9    0    0    0    3  384    0    3
+stop           |    0    0    1    0    0    1    0    0    0    0  409    0
+go             |    1    0    0   23    0    3    3    0    0    3    0  369
+----------------------------------------------------------------------------
+================================================================================

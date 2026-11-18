@@ -1,0 +1,165 @@
+# ==============================================================================
+# Real-Time Adaptive Voice Recognition Using Python
+# Default Configuration (configs/default.yaml)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Audio Capture & Streaming Settings
+# ------------------------------------------------------------------------------
+audio:
+  # Sampling rate in Hz (Google Speech Commands standard: 16 kHz)
+  sample_rate: 16000
+
+  # Number of audio channels (1 = mono, 2 = stereo)
+  channels: 1
+
+  # Hop size in samples (step size between successive analysis frames)
+  # 320 samples @ 16 kHz = 20.0 ms
+  hop_size: 320
+
+  # Analysis frame size in samples (window length)
+  # 640 samples @ 16 kHz = 40.0 ms (50% overlap with 320 hop)
+  frame_size: 640
+
+  # Audio encoding format (PCM 16-bit signed integer)
+  bit_depth: 16
+
+  # Frame queue capacity (maximum number of queued audio frames before drop/backpressure)
+  queue_capacity: 100
+
+  # Pre-roll buffer duration in milliseconds
+  # Captures speech onset preceding VAD trigger (200 ms @ 16 kHz = 3200 samples = 10 hops)
+  pre_roll_ms: 200
+
+# ------------------------------------------------------------------------------
+# Digital Signal Processing (DSP) & VAD Settings
+# ------------------------------------------------------------------------------
+dsp:
+  # Frame energy / RMS calculation window
+  rms_window_samples: 320
+
+  # Voice Activity Detection (VAD) energy threshold multiplier above background noise floor
+  vad_energy_threshold_factor: 2.5
+
+  # Minimum speech duration (ms) required to confirm an utterance
+  min_speech_duration_ms: 250
+
+  # Maximum utterance duration (ms) for word classification (1.0 second speech commands)
+  max_speech_duration_ms: 1000
+
+  # Noise floor adaptation rate (exponential moving average factor for background estimation)
+  noise_floor_alpha: 0.95
+
+  # Feature extraction method: "mfcc", "spectrogram", or "filterbank"
+  feature_type: "mfcc"
+
+  # Number of MFCC coefficients to compute
+  n_mfcc: 40
+
+# ------------------------------------------------------------------------------
+# Real-Time Scheduling (RTS) Settings
+# ------------------------------------------------------------------------------
+rts:
+  # Scheduling policy: "EDF" (Earliest Deadline First), "RM" (Rate Monotonic), or "FIFO"
+  policy: "EDF"
+
+  # Soft real-time deadline for processing each audio frame (milliseconds)
+  frame_deadline_ms: 20.0
+
+  # Soft real-time deadline for full utterance inference (milliseconds)
+  inference_deadline_ms: 100.0
+
+  # Deadline miss handling policy: "drop", "degrade_features", or "fallback_fast_model"
+  deadline_miss_strategy: "degrade_features"
+
+  # Ping-pong buffer slot count (dual buffer configuration)
+  ping_pong_buffer_count: 2
+
+# ------------------------------------------------------------------------------
+# Machine Learning (ML) & Dataset Paths
+# Relative paths from project root (No hardcoded absolute paths)
+# ------------------------------------------------------------------------------
+ml:
+  # Target command classes (10 core Google Speech Commands words)
+  target_commands:
+    - "yes"
+    - "no"
+    - "up"
+    - "down"
+    - "left"
+    - "right"
+    - "on"
+    - "off"
+    - "stop"
+    - "go"
+
+  # Auxiliary unknown classes bucketed into "_unknown_"
+  include_unknown: true
+
+  # Model architecture: "cnn_small", "dscnn", or "lstm"
+  model_architecture: "dscnn"
+
+  # Paths
+  data_raw_dir: "data/raw"
+  data_processed_dir: "data/processed"
+  data_manifests_dir: "data/manifests"
+  checkpoints_dir: "models/checkpoints"
+  best_checkpoint: "models/checkpoints/best_model.pt"
+
+# ------------------------------------------------------------------------------
+# System Orchestration & Logging
+# ------------------------------------------------------------------------------
+system:
+  # Logging verbosity: "DEBUG", "INFO", "WARNING", "ERROR"
+  log_level: "INFO"
+
+  # Log file location (relative to project root)
+  log_file: "results/app.log"
+
+  # Console log output enabled
+  console_logging: true
+
+# ------------------------------------------------------------------------------
+# Voice-Based Smart Lock & Access Control Settings
+# ------------------------------------------------------------------------------
+security:
+  # Expected PIN length (digits)
+  pin_length: 4
+
+  # Path to persistent salted PBKDF2 credentials (plaintext PIN is NEVER stored)
+  credentials_file: "configs/security_credentials.json"
+
+  # Maximum consecutive failed authentication attempts before lockout
+  max_failed_attempts: 3
+
+  # Inactivity timeout for PIN entry in seconds
+  pin_timeout_s: 10.0
+
+  # Automatic unlock duration in seconds before relocking
+  unlock_duration_s: 5.0
+
+  # Temporary security lockout duration in seconds after 3 failures
+  lockout_duration_s: 30.0
+
+  # PBKDF2 key derivation iterations
+  hash_iterations: 100000
+
+# ------------------------------------------------------------------------------
+# Timing, Benchmarking, & Experiment Settings
+# ------------------------------------------------------------------------------
+experiment:
+  # Simulation mode (true = replay from dataset WAV files, false = live microphone capture)
+  simulation_mode: true
+
+  # Audio stream simulation source file (when simulation_mode is true)
+  simulation_source: "data/raw/yes/004ae714_nohash_0.wav"
+
+  # Main event loop target period (ms)
+  loop_period_ms: 20.0
+
+  # Maximum allowed jitter before reporting timing violation (ms)
+  max_jitter_ms: 5.0
+
+  # Benchmark duration in seconds
+  benchmark_duration_s: 30
+

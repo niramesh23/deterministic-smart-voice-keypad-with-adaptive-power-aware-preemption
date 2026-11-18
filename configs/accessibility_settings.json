@@ -1,0 +1,11 @@
+{
+  "large_text": false,
+  "high_contrast": false,
+  "clear_status_indicators": true,
+  "spoken_feedback": true,
+  "audio_confirmation": true,
+  "pin_entry_timeout_s": 45.0,
+  "voice_feedback_volume": 1.0,
+  "reduced_visual_complexity": false,
+  "persistence_path": "configs/accessibility_settings.json"
+}

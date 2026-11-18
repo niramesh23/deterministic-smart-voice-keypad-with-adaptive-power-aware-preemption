@@ -1,0 +1,55 @@
+architecture: ResidualDS-CNN
+parameter_count: 28693
+epochs: 12
+batch_size: 128
+initial_learning_rate: 0.003
+weight_decay: 0.001
+label_smoothing: 0.05
+patience: 4
+random_seed: 42
+class_counts_train:
+  _silence_: 3000
+  _unknown_: 3500
+  'yes': 3228
+  'no': 3130
+  up: 2948
+  down: 3134
+  left: 3037
+  right: 3019
+  'on': 3086
+  'off': 2970
+  stop: 3111
+  go: 3106
+  one: 3140
+  two: 3111
+  three: 2966
+  four: 2955
+  five: 3240
+  six: 3088
+  seven: 3205
+  eight: 3033
+  nine: 3170
+class_weights:
+  _silence_: 1.033
+  _unknown_: 0.8854
+  'yes': 0.96
+  'no': 0.9901
+  up: 1.0512
+  down: 0.9888
+  left: 1.0204
+  right: 1.0265
+  'on': 1.0042
+  'off': 1.0434
+  stop: 0.9961
+  go: 0.9977
+  one: 0.9869
+  two: 0.9961
+  three: 1.0448
+  four: 1.0487
+  five: 0.9565
+  six: 1.0036
+  seven: 0.9669
+  eight: 1.0218
+  nine: 0.9776
+optimizer: AdamW
+scheduler: ReduceLROnPlateau(mode=max, factor=0.5, patience=2)
